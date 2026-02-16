@@ -1,0 +1,25 @@
+{
+  "name": "rate-limiter-proxy",
+  "version": "1.0.0",
+  "description": "A middleware/proxy with Rate Limiting, Request Queuing, and Circuit Breakers.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "test": "mocha --require @babel/register --recursive --full-trace test/**/*.test.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.2.1",
+    "ioredis": "^5.9.3",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.29.0",
+    "@babel/register": "^7.28.6",
+    "chai": "^6.2.2",
+    "mocha": "^11.7.5"
+  }
+}
