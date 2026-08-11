@@ -20,9 +20,9 @@ class TokenBucket {
             local fillRate = tonumber(ARGV[2])
             local now = tonumber(ARGV[3])
 
-            local bucket = redis.call('HGETALL', key)
-            local tokens = tonumber(bucket[2]) or capacity -- current tokens, default to capacity if not set
-            local lastRefillTime = tonumber(bucket[4]) or now -- last refill time, default to now
+            local bucket = redis.call('HMGET', key, 'tokens', 'lastRefillTime')
+            local tokens = bucket[1] and tonumber(bucket[1]) or capacity -- current tokens, default to capacity if not set
+            local lastRefillTime = bucket[2] and tonumber(bucket[2]) or now -- last refill time, default to now
 
             local timePassed = now - lastRefillTime
             local tokensToAdd = math.floor(timePassed * fillRate)
@@ -84,9 +84,9 @@ class TokenBucket {
             local fillRate = tonumber(ARGV[2])
             local now = tonumber(ARGV[3])
 
-            local bucket = redis.call('HGETALL', key)
-            local tokens = tonumber(bucket[2]) or capacity -- current tokens, default to capacity if not set
-            local lastRefillTime = tonumber(bucket[4]) or now -- last refill time, default to now
+            local bucket = redis.call('HMGET', key, 'tokens', 'lastRefillTime')
+            local tokens = bucket[1] and tonumber(bucket[1]) or capacity -- current tokens, default to capacity if not set
+            local lastRefillTime = bucket[2] and tonumber(bucket[2]) or now -- last refill time, default to now
 
             local timePassed = now - lastRefillTime
             local tokensToAdd = math.floor(timePassed * fillRate)

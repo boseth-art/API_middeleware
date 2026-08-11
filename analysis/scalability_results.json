@@ -1,0 +1,1108 @@
+{
+  "analysis_type": "Scalability Tests",
+  "timestamp": "2026-08-10T07:06:55Z",
+  "parameters": {
+    "tb_capacity": 30,
+    "tb_fill_rate": 15.0,
+    "sim_duration_sec": 120.0,
+    "crn_seed": 42
+  },
+  "queue_saturation_curves": {
+    "No Queue": {
+      "queue_size": 0,
+      "saturation_rps": 30,
+      "rps_curve": {
+        "5": {
+          "total": 581,
+          "served": 581,
+          "dropped": 0,
+          "drop_rate_%": 0.0,
+          "saturation": false
+        },
+        "10": {
+          "total": 1192,
+          "served": 1192,
+          "dropped": 0,
+          "drop_rate_%": 0.0,
+          "saturation": false
+        },
+        "15": {
+          "total": 1781,
+          "served": 1771,
+          "dropped": 10,
+          "drop_rate_%": 0.56,
+          "saturation": false
+        },
+        "20": {
+          "total": 2435,
+          "served": 1828,
+          "dropped": 607,
+          "drop_rate_%": 24.93,
+          "saturation": false
+        },
+        "30": {
+          "total": 3611,
+          "served": 1829,
+          "dropped": 1782,
+          "drop_rate_%": 49.35,
+          "saturation": false
+        },
+        "40": {
+          "total": 4779,
+          "served": 1829,
+          "dropped": 2950,
+          "drop_rate_%": 61.73,
+          "saturation": true
+        },
+        "50": {
+          "total": 5975,
+          "served": 1828,
+          "dropped": 4147,
+          "drop_rate_%": 69.41,
+          "saturation": true
+        },
+        "60": {
+          "total": 7342,
+          "served": 1829,
+          "dropped": 5513,
+          "drop_rate_%": 75.09,
+          "saturation": true
+        },
+        "70": {
+          "total": 8461,
+          "served": 1829,
+          "dropped": 6632,
+          "drop_rate_%": 78.38,
+          "saturation": true
+        },
+        "80": {
+          "total": 9524,
+          "served": 1829,
+          "dropped": 7695,
+          "drop_rate_%": 80.8,
+          "saturation": true
+        },
+        "100": {
+          "total": 11949,
+          "served": 1829,
+          "dropped": 10120,
+          "drop_rate_%": 84.69,
+          "saturation": true
+        },
+        "1000": {
+          "total": 119694,
+          "served": 1829,
+          "dropped": 117865,
+          "drop_rate_%": 98.47,
+          "saturation": true
+        }
+      }
+    },
+    "Q=5": {
+      "queue_size": 5,
+      "saturation_rps": 30,
+      "rps_curve": {
+        "5": {
+          "total": 583,
+          "served": 583,
+          "dropped": 0,
+          "drop_rate_%": 0.0,
+          "saturation": false
+        },
+        "10": {
+          "total": 1233,
+          "served": 1233,
+          "dropped": 0,
+          "drop_rate_%": 0.0,
+          "saturation": false
+        },
+        "15": {
+          "total": 1795,
+          "served": 1788,
+          "dropped": 7,
+          "drop_rate_%": 0.39,
+          "saturation": false
+        },
+        "20": {
+          "total": 2338,
+          "served": 1832,
+          "dropped": 506,
+          "drop_rate_%": 21.64,
+          "saturation": false
+        },
+        "30": {
+          "total": 3572,
+          "served": 1833,
+          "dropped": 1739,
+          "drop_rate_%": 48.68,
+          "saturation": false
+        },
+        "40": {
+          "total": 4783,
+          "served": 1833,
+          "dropped": 2950,
+          "drop_rate_%": 61.68,
+          "saturation": true
+        },
+        "50": {
+          "total": 5958,
+          "served": 1833,
+          "dropped": 4125,
+          "drop_rate_%": 69.23,
+          "saturation": true
+        },
+        "60": {
+          "total": 7201,
+          "served": 1834,
+          "dropped": 5367,
+          "drop_rate_%": 74.53,
+          "saturation": true
+        },
+        "70": {
+          "total": 8546,
+          "served": 1834,
+          "dropped": 6712,
+          "drop_rate_%": 78.54,
+          "saturation": true
+        },
+        "80": {
+          "total": 9606,
+          "served": 1834,
+          "dropped": 7772,
+          "drop_rate_%": 80.91,
+          "saturation": true
+        },
+        "100": {
+          "total": 11952,
+          "served": 1834,
+          "dropped": 10118,
+          "drop_rate_%": 84.66,
+          "saturation": true
+        },
+        "1000": {
+          "total": 119920,
+          "served": 1834,
+          "dropped": 118086,
+          "drop_rate_%": 98.47,
+          "saturation": true
+        }
+      }
+    },
+    "Q=10": {
+      "queue_size": 10,
+      "saturation_rps": 30,
+      "rps_curve": {
+        "5": {
+          "total": 599,
+          "served": 599,
+          "dropped": 0,
+          "drop_rate_%": 0.0,
+          "saturation": false
+        },
+        "10": {
+          "total": 1156,
+          "served": 1156,
+          "dropped": 0,
+          "drop_rate_%": 0.0,
+          "saturation": false
+        },
+        "15": {
+          "total": 1789,
+          "served": 1782,
+          "dropped": 7,
+          "drop_rate_%": 0.39,
+          "saturation": false
+        },
+        "20": {
+          "total": 2413,
+          "served": 1835,
+          "dropped": 578,
+          "drop_rate_%": 23.95,
+          "saturation": false
+        },
+        "30": {
+          "total": 3659,
+          "served": 1838,
+          "dropped": 1821,
+          "drop_rate_%": 49.77,
+          "saturation": false
+        },
+        "40": {
+          "total": 4735,
+          "served": 1838,
+          "dropped": 2897,
+          "drop_rate_%": 61.18,
+          "saturation": true
+        },
+        "50": {
+          "total": 5860,
+          "served": 1839,
+          "dropped": 4021,
+          "drop_rate_%": 68.62,
+          "saturation": true
+        },
+        "60": {
+          "total": 7109,
+          "served": 1838,
+          "dropped": 5271,
+          "drop_rate_%": 74.15,
+          "saturation": true
+        },
+        "70": {
+          "total": 8393,
+          "served": 1839,
+          "dropped": 6554,
+          "drop_rate_%": 78.09,
+          "saturation": true
+        },
+        "80": {
+          "total": 9712,
+          "served": 1839,
+          "dropped": 7873,
+          "drop_rate_%": 81.06,
+          "saturation": true
+        },
+        "100": {
+          "total": 12045,
+          "served": 1839,
+          "dropped": 10206,
+          "drop_rate_%": 84.73,
+          "saturation": true
+        },
+        "1000": {
+          "total": 119648,
+          "served": 1839,
+          "dropped": 117809,
+          "drop_rate_%": 98.46,
+          "saturation": true
+        }
+      }
+    },
+    "Q=20": {
+      "queue_size": 20,
+      "saturation_rps": 30,
+      "rps_curve": {
+        "5": {
+          "total": 574,
+          "served": 574,
+          "dropped": 0,
+          "drop_rate_%": 0.0,
+          "saturation": false
+        },
+        "10": {
+          "total": 1178,
+          "served": 1178,
+          "dropped": 0,
+          "drop_rate_%": 0.0,
+          "saturation": false
+        },
+        "15": {
+          "total": 1843,
+          "served": 1823,
+          "dropped": 20,
+          "drop_rate_%": 1.09,
+          "saturation": false
+        },
+        "20": {
+          "total": 2374,
+          "served": 1847,
+          "dropped": 527,
+          "drop_rate_%": 22.2,
+          "saturation": false
+        },
+        "30": {
+          "total": 3629,
+          "served": 1849,
+          "dropped": 1780,
+          "drop_rate_%": 49.05,
+          "saturation": false
+        },
+        "40": {
+          "total": 4893,
+          "served": 1849,
+          "dropped": 3044,
+          "drop_rate_%": 62.21,
+          "saturation": true
+        },
+        "50": {
+          "total": 5955,
+          "served": 1849,
+          "dropped": 4106,
+          "drop_rate_%": 68.95,
+          "saturation": true
+        },
+        "60": {
+          "total": 7155,
+          "served": 1849,
+          "dropped": 5306,
+          "drop_rate_%": 74.16,
+          "saturation": true
+        },
+        "70": {
+          "total": 8476,
+          "served": 1849,
+          "dropped": 6627,
+          "drop_rate_%": 78.19,
+          "saturation": true
+        },
+        "80": {
+          "total": 9586,
+          "served": 1849,
+          "dropped": 7737,
+          "drop_rate_%": 80.71,
+          "saturation": true
+        },
+        "100": {
+          "total": 12232,
+          "served": 1849,
+          "dropped": 10383,
+          "drop_rate_%": 84.88,
+          "saturation": true
+        },
+        "1000": {
+          "total": 120509,
+          "served": 1849,
+          "dropped": 118660,
+          "drop_rate_%": 98.47,
+          "saturation": true
+        }
+      }
+    },
+    "Q=50": {
+      "queue_size": 50,
+      "saturation_rps": 30,
+      "rps_curve": {
+        "5": {
+          "total": 579,
+          "served": 579,
+          "dropped": 0,
+          "drop_rate_%": 0.0,
+          "saturation": false
+        },
+        "10": {
+          "total": 1174,
+          "served": 1174,
+          "dropped": 0,
+          "drop_rate_%": 0.0,
+          "saturation": false
+        },
+        "15": {
+          "total": 1827,
+          "served": 1826,
+          "dropped": 1,
+          "drop_rate_%": 0.05,
+          "saturation": false
+        },
+        "20": {
+          "total": 2430,
+          "served": 1875,
+          "dropped": 555,
+          "drop_rate_%": 22.84,
+          "saturation": false
+        },
+        "30": {
+          "total": 3616,
+          "served": 1878,
+          "dropped": 1738,
+          "drop_rate_%": 48.06,
+          "saturation": false
+        },
+        "40": {
+          "total": 4817,
+          "served": 1878,
+          "dropped": 2939,
+          "drop_rate_%": 61.01,
+          "saturation": true
+        },
+        "50": {
+          "total": 6026,
+          "served": 1879,
+          "dropped": 4147,
+          "drop_rate_%": 68.82,
+          "saturation": true
+        },
+        "60": {
+          "total": 7165,
+          "served": 1879,
+          "dropped": 5286,
+          "drop_rate_%": 73.78,
+          "saturation": true
+        },
+        "70": {
+          "total": 8332,
+          "served": 1879,
+          "dropped": 6453,
+          "drop_rate_%": 77.45,
+          "saturation": true
+        },
+        "80": {
+          "total": 9535,
+          "served": 1879,
+          "dropped": 7656,
+          "drop_rate_%": 80.29,
+          "saturation": true
+        },
+        "100": {
+          "total": 12053,
+          "served": 1879,
+          "dropped": 10174,
+          "drop_rate_%": 84.41,
+          "saturation": true
+        },
+        "1000": {
+          "total": 120435,
+          "served": 1879,
+          "dropped": 118556,
+          "drop_rate_%": 98.44,
+          "saturation": true
+        }
+      }
+    },
+    "Q=75": {
+      "queue_size": 75,
+      "saturation_rps": 30,
+      "rps_curve": {
+        "5": {
+          "total": 623,
+          "served": 623,
+          "dropped": 0,
+          "drop_rate_%": 0.0,
+          "saturation": false
+        },
+        "10": {
+          "total": 1241,
+          "served": 1241,
+          "dropped": 0,
+          "drop_rate_%": 0.0,
+          "saturation": false
+        },
+        "15": {
+          "total": 1762,
+          "served": 1762,
+          "dropped": 0,
+          "drop_rate_%": 0.0,
+          "saturation": false
+        },
+        "20": {
+          "total": 2447,
+          "served": 1895,
+          "dropped": 552,
+          "drop_rate_%": 22.56,
+          "saturation": false
+        },
+        "30": {
+          "total": 3634,
+          "served": 1903,
+          "dropped": 1731,
+          "drop_rate_%": 47.63,
+          "saturation": false
+        },
+        "40": {
+          "total": 4884,
+          "served": 1904,
+          "dropped": 2980,
+          "drop_rate_%": 61.02,
+          "saturation": true
+        },
+        "50": {
+          "total": 6040,
+          "served": 1903,
+          "dropped": 4137,
+          "drop_rate_%": 68.49,
+          "saturation": true
+        },
+        "60": {
+          "total": 7142,
+          "served": 1904,
+          "dropped": 5238,
+          "drop_rate_%": 73.34,
+          "saturation": true
+        },
+        "70": {
+          "total": 8369,
+          "served": 1904,
+          "dropped": 6465,
+          "drop_rate_%": 77.25,
+          "saturation": true
+        },
+        "80": {
+          "total": 9553,
+          "served": 1904,
+          "dropped": 7649,
+          "drop_rate_%": 80.07,
+          "saturation": true
+        },
+        "100": {
+          "total": 12085,
+          "served": 1904,
+          "dropped": 10181,
+          "drop_rate_%": 84.24,
+          "saturation": true
+        },
+        "1000": {
+          "total": 120189,
+          "served": 1904,
+          "dropped": 118285,
+          "drop_rate_%": 98.42,
+          "saturation": true
+        }
+      }
+    },
+    "Q=100": {
+      "queue_size": 100,
+      "saturation_rps": 30,
+      "rps_curve": {
+        "5": {
+          "total": 601,
+          "served": 601,
+          "dropped": 0,
+          "drop_rate_%": 0.0,
+          "saturation": false
+        },
+        "10": {
+          "total": 1136,
+          "served": 1136,
+          "dropped": 0,
+          "drop_rate_%": 0.0,
+          "saturation": false
+        },
+        "15": {
+          "total": 1854,
+          "served": 1854,
+          "dropped": 0,
+          "drop_rate_%": 0.0,
+          "saturation": false
+        },
+        "20": {
+          "total": 2413,
+          "served": 1929,
+          "dropped": 484,
+          "drop_rate_%": 20.06,
+          "saturation": false
+        },
+        "30": {
+          "total": 3653,
+          "served": 1929,
+          "dropped": 1724,
+          "drop_rate_%": 47.19,
+          "saturation": false
+        },
+        "40": {
+          "total": 4895,
+          "served": 1929,
+          "dropped": 2966,
+          "drop_rate_%": 60.59,
+          "saturation": true
+        },
+        "50": {
+          "total": 5993,
+          "served": 1929,
+          "dropped": 4064,
+          "drop_rate_%": 67.81,
+          "saturation": true
+        },
+        "60": {
+          "total": 7228,
+          "served": 1929,
+          "dropped": 5299,
+          "drop_rate_%": 73.31,
+          "saturation": true
+        },
+        "70": {
+          "total": 8461,
+          "served": 1929,
+          "dropped": 6532,
+          "drop_rate_%": 77.2,
+          "saturation": true
+        },
+        "80": {
+          "total": 9539,
+          "served": 1929,
+          "dropped": 7610,
+          "drop_rate_%": 79.78,
+          "saturation": true
+        },
+        "100": {
+          "total": 11939,
+          "served": 1929,
+          "dropped": 10010,
+          "drop_rate_%": 83.84,
+          "saturation": true
+        },
+        "1000": {
+          "total": 119909,
+          "served": 1929,
+          "dropped": 117980,
+          "drop_rate_%": 98.39,
+          "saturation": true
+        }
+      }
+    }
+  },
+  "horizontal_scaling": {
+    "1_workers": {
+      "workers": 1,
+      "drain_rate": 15.0,
+      "total_reqs": 5986,
+      "served": 1829,
+      "dropped": 4137,
+      "drop_rate_%": 69.11,
+      "throughput_rps": 15.24,
+      "scaling_efficiency_%": 100.0
+    },
+    "2_workers": {
+      "workers": 2,
+      "drain_rate": 30.0,
+      "total_reqs": 6034,
+      "served": 3628,
+      "dropped": 2386,
+      "drop_rate_%": 39.54,
+      "throughput_rps": 30.23,
+      "scaling_efficiency_%": 99.18
+    },
+    "4_workers": {
+      "workers": 4,
+      "drain_rate": 60.0,
+      "total_reqs": 5950,
+      "served": 5950,
+      "dropped": 0,
+      "drop_rate_%": 0.0,
+      "throughput_rps": 49.58,
+      "scaling_efficiency_%": 81.33
+    },
+    "8_workers": {
+      "workers": 8,
+      "drain_rate": 120.0,
+      "total_reqs": 6084,
+      "served": 6084,
+      "dropped": 0,
+      "drop_rate_%": 0.0,
+      "throughput_rps": 50.7,
+      "scaling_efficiency_%": 41.58
+    },
+    "16_workers": {
+      "workers": 16,
+      "drain_rate": 240.0,
+      "total_reqs": 6053,
+      "served": 6053,
+      "dropped": 0,
+      "drop_rate_%": 0.0,
+      "throughput_rps": 50.44,
+      "scaling_efficiency_%": 20.69
+    }
+  },
+  "circuit_breaker_stress": {
+    "A: Transient Burst (80% fail for 10s)": {
+      "scenario": "A: Transient Burst (80% fail for 10s)",
+      "total_requests": 2356,
+      "succeeded": 2066,
+      "failed": 3,
+      "rejected": 287,
+      "success_rate_%": 87.69,
+      "rejection_rate_%": 12.18,
+      "cb_transitions": [
+        {
+          "time": 0.13376385120789247,
+          "from": "CLOSED",
+          "to": "OPEN"
+        },
+        {
+          "time": 15.18509423061398,
+          "from": "OPEN",
+          "to": "HALF_OPEN"
+        },
+        {
+          "time": 15.246374339657706,
+          "from": "HALF_OPEN",
+          "to": "CLOSED"
+        }
+      ],
+      "n_transitions": 3,
+      "time_in_state_sec": {
+        "CLOSED": 104.87,
+        "OPEN": 15.05,
+        "HALF_OPEN": 0.06
+      },
+      "open_durations_sec": [
+        15.05
+      ],
+      "mean_open_duration_sec": 15.05
+    },
+    "B: Sustained Moderate (60% fail)": {
+      "scenario": "B: Sustained Moderate (60% fail)",
+      "total_requests": 2453,
+      "succeeded": 6,
+      "failed": 13,
+      "rejected": 2434,
+      "success_rate_%": 0.24,
+      "rejection_rate_%": 99.23,
+      "cb_transitions": [
+        {
+          "time": 0.32673903705732893,
+          "from": "CLOSED",
+          "to": "OPEN"
+        },
+        {
+          "time": 15.423878670241283,
+          "from": "OPEN",
+          "to": "HALF_OPEN"
+        },
+        {
+          "time": 15.461186457843406,
+          "from": "HALF_OPEN",
+          "to": "OPEN"
+        },
+        {
+          "time": 30.515208088638857,
+          "from": "OPEN",
+          "to": "HALF_OPEN"
+        },
+        {
+          "time": 30.556563022792893,
+          "from": "HALF_OPEN",
+          "to": "OPEN"
+        },
+        {
+          "time": 45.68353975185458,
+          "from": "OPEN",
+          "to": "HALF_OPEN"
+        },
+        {
+          "time": 45.68353975185458,
+          "from": "OPEN",
+          "to": "OPEN"
+        },
+        {
+          "time": 60.72324103561099,
+          "from": "OPEN",
+          "to": "HALF_OPEN"
+        },
+        {
+          "time": 60.75273059001328,
+          "from": "HALF_OPEN",
+          "to": "OPEN"
+        },
+        {
+          "time": 75.7600086130837,
+          "from": "OPEN",
+          "to": "HALF_OPEN"
+        },
+        {
+          "time": 75.7600086130837,
+          "from": "OPEN",
+          "to": "OPEN"
+        },
+        {
+          "time": 90.8066161571505,
+          "from": "OPEN",
+          "to": "HALF_OPEN"
+        },
+        {
+          "time": 90.8066161571505,
+          "from": "OPEN",
+          "to": "OPEN"
+        },
+        {
+          "time": 105.88601107318229,
+          "from": "OPEN",
+          "to": "HALF_OPEN"
+        },
+        {
+          "time": 105.88601107318229,
+          "from": "OPEN",
+          "to": "OPEN"
+        }
+      ],
+      "n_transitions": 15,
+      "time_in_state_sec": {
+        "CLOSED": 0.33,
+        "OPEN": 119.53,
+        "HALF_OPEN": 0.11
+      },
+      "open_durations_sec": [
+        15.1,
+        15.05,
+        15.13,
+        15.04,
+        15.01,
+        15.05,
+        15.08
+      ],
+      "mean_open_duration_sec": 15.06
+    },
+    "C: Cascading Spikes (100% fail / 20s)": {
+      "scenario": "C: Cascading Spikes (100% fail / 20s)",
+      "total_requests": 2418,
+      "succeeded": 591,
+      "failed": 18,
+      "rejected": 1809,
+      "success_rate_%": 24.44,
+      "rejection_rate_%": 74.81,
+      "cb_transitions": [
+        {
+          "time": 0.30049814088820825,
+          "from": "CLOSED",
+          "to": "OPEN"
+        },
+        {
+          "time": 15.301255448075159,
+          "from": "OPEN",
+          "to": "HALF_OPEN"
+        },
+        {
+          "time": 15.311532359603058,
+          "from": "HALF_OPEN",
+          "to": "CLOSED"
+        },
+        {
+          "time": 20.041364008484376,
+          "from": "CLOSED",
+          "to": "OPEN"
+        },
+        {
+          "time": 35.042208811089736,
+          "from": "OPEN",
+          "to": "HALF_OPEN"
+        },
+        {
+          "time": 35.05350436062002,
+          "from": "HALF_OPEN",
+          "to": "CLOSED"
+        },
+        {
+          "time": 40.05098324159353,
+          "from": "CLOSED",
+          "to": "OPEN"
+        },
+        {
+          "time": 55.18689403119371,
+          "from": "OPEN",
+          "to": "HALF_OPEN"
+        },
+        {
+          "time": 55.33548662105171,
+          "from": "HALF_OPEN",
+          "to": "CLOSED"
+        },
+        {
+          "time": 60.02676672803174,
+          "from": "CLOSED",
+          "to": "OPEN"
+        },
+        {
+          "time": 75.10703716949438,
+          "from": "OPEN",
+          "to": "HALF_OPEN"
+        },
+        {
+          "time": 75.18739137072956,
+          "from": "HALF_OPEN",
+          "to": "CLOSED"
+        },
+        {
+          "time": 80.05745570677244,
+          "from": "CLOSED",
+          "to": "OPEN"
+        },
+        {
+          "time": 95.16269818099059,
+          "from": "OPEN",
+          "to": "HALF_OPEN"
+        },
+        {
+          "time": 95.24945113694389,
+          "from": "HALF_OPEN",
+          "to": "CLOSED"
+        },
+        {
+          "time": 100.05437014982087,
+          "from": "CLOSED",
+          "to": "OPEN"
+        },
+        {
+          "time": 115.29247810423361,
+          "from": "OPEN",
+          "to": "HALF_OPEN"
+        },
+        {
+          "time": 115.30849081903493,
+          "from": "HALF_OPEN",
+          "to": "CLOSED"
+        }
+      ],
+      "n_transitions": 18,
+      "time_in_state_sec": {
+        "CLOSED": 29.0,
+        "OPEN": 90.56,
+        "HALF_OPEN": 0.35
+      },
+      "open_durations_sec": [
+        15.0,
+        15.0,
+        15.14,
+        15.08,
+        15.11,
+        15.24
+      ],
+      "mean_open_duration_sec": 15.09
+    }
+  },
+  "spike_absorption": {
+    "spike_5": {
+      "spike_size": 5,
+      "theoretical_absorb": 100.0,
+      "queue_buffered": 5,
+      "immediate_service": 5,
+      "dropped_spike": 0,
+      "drop_rate_%": 0.0
+    },
+    "spike_10": {
+      "spike_size": 10,
+      "theoretical_absorb": 100.0,
+      "queue_buffered": 10,
+      "immediate_service": 10,
+      "dropped_spike": 0,
+      "drop_rate_%": 0.0
+    },
+    "spike_15": {
+      "spike_size": 15,
+      "theoretical_absorb": 100.0,
+      "queue_buffered": 15,
+      "immediate_service": 15,
+      "dropped_spike": 0,
+      "drop_rate_%": 0.0
+    },
+    "spike_20": {
+      "spike_size": 20,
+      "theoretical_absorb": 100.0,
+      "queue_buffered": 20,
+      "immediate_service": 20,
+      "dropped_spike": 0,
+      "drop_rate_%": 0.0
+    },
+    "spike_30": {
+      "spike_size": 30,
+      "theoretical_absorb": 100.0,
+      "queue_buffered": 30,
+      "immediate_service": 30,
+      "dropped_spike": 0,
+      "drop_rate_%": 0.0
+    },
+    "spike_50": {
+      "spike_size": 50,
+      "theoretical_absorb": 100.0,
+      "queue_buffered": 50,
+      "immediate_service": 30,
+      "dropped_spike": 0,
+      "drop_rate_%": 0.0
+    },
+    "spike_75": {
+      "spike_size": 75,
+      "theoretical_absorb": 100.0,
+      "queue_buffered": 75,
+      "immediate_service": 30,
+      "dropped_spike": 0,
+      "drop_rate_%": 0.0
+    },
+    "spike_100": {
+      "spike_size": 100,
+      "theoretical_absorb": 100.0,
+      "queue_buffered": 75,
+      "immediate_service": 30,
+      "dropped_spike": 0,
+      "drop_rate_%": 0.0
+    },
+    "spike_150": {
+      "spike_size": 150,
+      "theoretical_absorb": 70.0,
+      "queue_buffered": 75,
+      "immediate_service": 30,
+      "dropped_spike": 45,
+      "drop_rate_%": 30.0
+    },
+    "spike_200": {
+      "spike_size": 200,
+      "theoretical_absorb": 52.5,
+      "queue_buffered": 75,
+      "immediate_service": 30,
+      "dropped_spike": 95,
+      "drop_rate_%": 47.5
+    },
+    "spike_1000": {
+      "spike_size": 1000,
+      "theoretical_absorb": 10.5,
+      "queue_buffered": 75,
+      "immediate_service": 30,
+      "dropped_spike": 895,
+      "drop_rate_%": 89.5
+    }
+  },
+  "sustained_load_stability": {
+    "0.5x_fill_rate": {
+      "incoming_rps": 7.5,
+      "fill_rate": 15.0,
+      "load_ratio": 0.5,
+      "total_arrivals": 858,
+      "served": 858,
+      "dropped": 0,
+      "drop_rate_%": 0.0,
+      "throughput_rps": 7.15,
+      "stable": true
+    },
+    "1.0x_fill_rate": {
+      "incoming_rps": 15.0,
+      "fill_rate": 15.0,
+      "load_ratio": 1.0,
+      "total_arrivals": 1797,
+      "served": 1786,
+      "dropped": 11,
+      "drop_rate_%": 0.61,
+      "throughput_rps": 14.88,
+      "stable": true
+    },
+    "1.5x_fill_rate": {
+      "incoming_rps": 22.5,
+      "fill_rate": 15.0,
+      "load_ratio": 1.5,
+      "total_arrivals": 2742,
+      "served": 1838,
+      "dropped": 904,
+      "drop_rate_%": 32.97,
+      "throughput_rps": 15.32,
+      "stable": false
+    },
+    "2.0x_fill_rate": {
+      "incoming_rps": 30.0,
+      "fill_rate": 15.0,
+      "load_ratio": 2.0,
+      "total_arrivals": 3590,
+      "served": 1839,
+      "dropped": 1751,
+      "drop_rate_%": 48.77,
+      "throughput_rps": 15.32,
+      "stable": false
+    },
+    "3.0x_fill_rate": {
+      "incoming_rps": 45.0,
+      "fill_rate": 15.0,
+      "load_ratio": 3.0,
+      "total_arrivals": 5390,
+      "served": 1839,
+      "dropped": 3551,
+      "drop_rate_%": 65.88,
+      "throughput_rps": 15.32,
+      "stable": false
+    },
+    "5.0x_fill_rate": {
+      "incoming_rps": 75.0,
+      "fill_rate": 15.0,
+      "load_ratio": 5.0,
+      "total_arrivals": 9078,
+      "served": 1839,
+      "dropped": 7239,
+      "drop_rate_%": 79.74,
+      "throughput_rps": 15.32,
+      "stable": false
+    }
+  }
+}

@@ -9,8 +9,9 @@ const PORT = process.env.PORT || 3000;
 const TARGET_SERVICE_URL = 'http://localhost:3001/db-login'; // Mock database service
 
 // --- Configuration ---
-const RATE_LIMIT_CAPACITY = 1000;   // Max 1000 tokens in the bucket
-const RATE_LIMIT_FILL_RATE = 100;   // 100 tokens per second (allowing 100 RPS)
+const RATE_LIMIT_CAPACITY = 30;     // Sweet spot capacity (was 1000)
+const RATE_LIMIT_FILL_RATE = 15;    // Sweet spot fill rate (was 100)
+const QUEUE_MAX_SIZE = 75;          // Sweet spot queue size
 const QUEUE_NAME = 'login_queue';
 
 const CIRCUIT_BREAKER_FAILURE_THRESHOLD = 3;
@@ -19,7 +20,7 @@ const CIRCUIT_BREAKER_SUCCESS_THRESHOLD = 2;
 
 // --- Instantiation ---
 const tokenBucket = new TokenBucket(RATE_LIMIT_CAPACITY, RATE_LIMIT_FILL_RATE, 'login_rate_limit');
-const requestQueue = new RequestQueue(QUEUE_NAME);
+const requestQueue = new RequestQueue(QUEUE_NAME, QUEUE_MAX_SIZE);
 const circuitBreaker = new CircuitBreaker(
     CIRCUIT_BREAKER_FAILURE_THRESHOLD,
     CIRCUIT_BREAKER_RESET_TIMEOUT,
@@ -57,17 +58,25 @@ app.post('/login', async (req, res) => {
 
     if (!tokenConsumed) {
         // 2. Request Queuing
-        console.log(`[${requestId}] Rate limit exceeded for ${username}. Enqueuing request.`);
-        await requestQueue.enqueue({
-            requestId,
-            method: req.method,
-            url: req.originalUrl,
-            headers: req.headers,
-            body: req.body,
-            // You might need to store more context if the client needs to be notified directly
-            // For now, we'll assume the client just gets a 'queued' response.
-        });
-        return res.status(202).json({ message: 'Request queued. Please wait.', requestId });
+        try {
+            await requestQueue.enqueue({
+                requestId,
+                method: req.method,
+                url: req.originalUrl,
+                headers: req.headers,
+                body: req.body,
+                // You might need to store more context if the client needs to be notified directly
+                // For now, we'll assume the client just gets a 'queued' response.
+            });
+            console.log(`[${requestId}] Rate limit exceeded for ${username}. Enqueued request.`);
+            return res.status(202).json({ message: 'Request queued. Please wait.', requestId });
+        } catch (error) {
+            if (error.code === 'QUEUE_FULL') {
+                console.warn(`[${requestId}] Queue is full. Dropping request for ${username}.`);
+                return res.status(429).json({ message: 'Too Many Requests. System is at capacity. Please try again later.' });
+            }
+            throw error;
+        }
     }
 
     // If token consumed, proceed with circuit breaker
@@ -119,6 +128,7 @@ app.get('/status', async (req, res) => {
         },
         requestQueue: {
             name: QUEUE_NAME,
+            maxSize: QUEUE_MAX_SIZE,
             length: queueLength,
         },
         circuitBreaker: {

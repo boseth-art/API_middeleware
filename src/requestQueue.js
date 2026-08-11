@@ -5,8 +5,9 @@ const REDIS_HOST = process.env.REDIS_HOST || '127.0.0.1';
 const REDIS_PORT = process.env.REDIS_PORT || 6379;
 
 class RequestQueue {
-    constructor(queueName) {
+    constructor(queueName, maxSize = 0) {
         this.queueName = queueName;
+        this.maxSize = maxSize;
         this.redis = new Redis({
             host: REDIS_HOST,
             port: REDIS_PORT
@@ -15,7 +16,7 @@ class RequestQueue {
             host: REDIS_HOST,
             port: REDIS_PORT
         });
-        console.log(`RequestQueue '${queueName}' initialized with Redis at ${REDIS_HOST}:${REDIS_PORT}`);
+        console.log(`RequestQueue '${queueName}' initialized (maxSize: ${maxSize || 'unbounded'}) with Redis at ${REDIS_HOST}:${REDIS_PORT}`);
     }
 
     /**
@@ -24,6 +25,14 @@ class RequestQueue {
      * @returns {Promise<string>} The ID of the enqueued request.
      */
     async enqueue(requestData) {
+        if (this.maxSize > 0) {
+            const currentLength = await this.length();
+            if (currentLength >= this.maxSize) {
+                const error = new Error('Queue capacity exceeded');
+                error.code = 'QUEUE_FULL';
+                throw error;
+            }
+        }
         const requestId = uuidv4();
         const queuedRequest = { id: requestId, timestamp: Date.now(), ...requestData };
         try {

@@ -1,0 +1,26 @@
+{
+  "drop_rate": {
+    "welch_t_test": {
+      "t_statistic": 4.943731,
+      "df_approx": 57.96,
+      "p_value": 7.7e-07,
+      "significance": "*** (p < 0.001)",
+      "decision": "Reject H\u2080"
+    },
+    "mann_whitney_u": {
+      "u_statistic": 173.0,
+      "p_value": 4.219e-05,
+      "significance": "*** (p < 0.001)",
+      "decision": "Reject H\u2080"
+    },
+    "one_way_anova": {
+      "f_statistic": 180.625577,
+      "df_between": 4,
+      "df_within": 145,
+      "groups_tested": 5,
+      "p_value": 0.0,
+      "significance": "*** (p < 0.001)",
+      "decision": "Reject H\u2080"
+    }
+  }
+}

@@ -4,8 +4,8 @@ import CircuitBreaker from './circuitBreaker.js';
 import fetch from 'node-fetch'; // For making HTTP requests
 
 // --- Configuration ---
-const RATE_LIMIT_CAPACITY = 1000;
-const RATE_LIMIT_FILL_RATE = 100;
+const RATE_LIMIT_CAPACITY = 30;
+const RATE_LIMIT_FILL_RATE = 15;
 const QUEUE_NAME = 'login_queue';
 const TARGET_SERVICE_URL = 'http://localhost:3001/db-login';
 

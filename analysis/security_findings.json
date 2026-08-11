@@ -1,0 +1,322 @@
+{
+  "analysis_type": "Security Analysis",
+  "timestamp": "2026-07-10T17:19:40Z",
+  "summary": {
+    "total_tests": 8,
+    "severity_counts": {
+      "CRITICAL": 2,
+      "HIGH": 5,
+      "MEDIUM": 1,
+      "LOW": 0
+    },
+    "status_counts": {
+      "MITIGATED": 3,
+      "VULNERABLE": 3,
+      "PARTIAL": 2
+    },
+    "overall_risk_score": 59,
+    "risk_rating": "CRITICAL",
+    "vulnerabilities": [
+      "Redis Key Injection / Manipulation",
+      "Circuit Breaker DoS via Deliberate Failures",
+      "X-Forwarded-For Header Spoofing"
+    ],
+    "partial": [
+      "Request Payload Security (Queue Poisoning)",
+      "Queue Overflow / Redis Memory Exhaustion"
+    ],
+    "mitigated": [
+      "Brute-Force Login Storm (Single IP)",
+      "Slow-Drip Credential Stuffing",
+      "Token Bucket Arithmetic Edge Cases"
+    ]
+  },
+  "findings": [
+    {
+      "test_name": "Brute-Force Login Storm (Single IP)",
+      "category": "Availability / Authentication",
+      "severity": "CRITICAL",
+      "status": "MITIGATED",
+      "description": "500 rapid login requests from a single source within 500ms.",
+      "details": {
+        "total_requests": 500,
+        "allowed": 1,
+        "queued": 10,
+        "dropped": 489,
+        "bypass_ratio_%": 0.2,
+        "capacity": 10,
+        "effective_throttle_%": 99.8
+      },
+      "recommendation": "Current token bucket effectively limits burst access. Consider adding per-IP rate limiting alongside the global bucket for stricter isolation."
+    },
+    {
+      "test_name": "Slow-Drip Credential Stuffing",
+      "category": "Authentication",
+      "severity": "HIGH",
+      "status": "MITIGATED",
+      "description": "Attacker sends 4 req/sec (just below fill rate of 5/sec) over 60 seconds to evade the token bucket.",
+      "details": {
+        "attack_rps": 4,
+        "duration_sec": 60,
+        "total_sent": 240,
+        "allowed": 0,
+        "pass_rate_%": 0.0
+      },
+      "recommendation": "The token bucket alone cannot detect slow-drip attacks since each request individually respects the rate limit. Implement a sliding-window anomaly detector or account-level lockout (e.g., \u22655 failures \u2192 lock 15 min) to complement the SDB mechanism."
+    },
+    {
+      "test_name": "Redis Key Injection / Manipulation",
+      "category": "Injection",
+      "severity": "HIGH",
+      "status": "VULNERABLE",
+      "description": "Tests adversarial inputs that could corrupt Redis key namespace or cause memory DoS.",
+      "details": {
+        "test_cases_run": 6,
+        "vulnerable_inputs": 4,
+        "results": {
+          "newline_injection": {
+            "input_key_length": 32,
+            "passes_sanitization": false,
+            "utf8_encodable": true,
+            "risk": "HIGH"
+          },
+          "null_byte_injection": {
+            "input_key_length": 26,
+            "passes_sanitization": false,
+            "utf8_encodable": true,
+            "risk": "HIGH"
+          },
+          "long_key_dos": {
+            "input_key_length": 65536,
+            "passes_sanitization": false,
+            "utf8_encodable": true,
+            "risk": "HIGH"
+          },
+          "unicode_surrogate": {
+            "input_key_length": 17,
+            "passes_sanitization": false,
+            "utf8_encodable": false,
+            "risk": "HIGH"
+          },
+          "format_string": {
+            "input_key_length": 17,
+            "passes_sanitization": true,
+            "utf8_encodable": true,
+            "risk": "LOW"
+          },
+          "path_traversal": {
+            "input_key_length": 16,
+            "passes_sanitization": true,
+            "utf8_encodable": true,
+            "risk": "LOW"
+          }
+        }
+      },
+      "recommendation": "Validate and sanitize all Redis key inputs. Enforce strict alphanumeric + underscore naming conventions for bucket keys. Use a key prefix schema (e.g., 'sdb:rl:{clientId}') validated against a regex before any Redis operation."
+    },
+    {
+      "test_name": "Request Payload Security (Queue Poisoning)",
+      "category": "Injection / Input Validation",
+      "severity": "HIGH",
+      "status": "PARTIAL",
+      "description": "Checks whether malicious request bodies can be stored in the Redis queue without sanitization.",
+      "details": {
+        "payloads_tested": 8,
+        "risky_payloads": [
+          "oversized_payload",
+          "prototype_pollution",
+          "script_injection",
+          "sql_injection",
+          "null_byte"
+        ],
+        "results": {
+          "normal": {
+            "payload_size_kb": 0.04,
+            "issues_detected": [],
+            "would_be_queued": true,
+            "risk": "LOW"
+          },
+          "oversized_payload": {
+            "payload_size_kb": 19.56,
+            "issues_detected": [
+              "oversized_payload"
+            ],
+            "would_be_queued": true,
+            "risk": "HIGH"
+          },
+          "prototype_pollution": {
+            "payload_size_kb": 0.05,
+            "issues_detected": [
+              "prototype_pollution"
+            ],
+            "would_be_queued": true,
+            "risk": "HIGH"
+          },
+          "json_injection": {
+            "payload_size_kb": 0.05,
+            "issues_detected": [],
+            "would_be_queued": true,
+            "risk": "LOW"
+          },
+          "script_injection": {
+            "payload_size_kb": 0.06,
+            "issues_detected": [
+              "xss_in_username"
+            ],
+            "would_be_queued": true,
+            "risk": "HIGH"
+          },
+          "sql_injection": {
+            "payload_size_kb": 0.05,
+            "issues_detected": [
+              "sql_chars"
+            ],
+            "would_be_queued": true,
+            "risk": "HIGH"
+          },
+          "null_byte": {
+            "payload_size_kb": 0.05,
+            "issues_detected": [
+              "null_byte"
+            ],
+            "would_be_queued": true,
+            "risk": "HIGH"
+          },
+          "unicode_overflow": {
+            "payload_size_kb": 2.96,
+            "issues_detected": [],
+            "would_be_queued": true,
+            "risk": "LOW"
+          }
+        }
+      },
+      "recommendation": "Add a middleware layer to validate JSON schema before enqueueing. Enforce max body size (e.g., 4KB). Strip/reject null bytes and prototype keys. Sanitize username/password fields against known injection patterns."
+    },
+    {
+      "test_name": "Token Bucket Arithmetic Edge Cases",
+      "category": "Logic / Arithmetic",
+      "severity": "MEDIUM",
+      "status": "MITIGATED",
+      "description": "Probes token bucket for arithmetic edge cases: clock skew, fractional fill, overshoot, zero-capacity, race conditions.",
+      "details": {
+        "clock_skew_negative_time": {
+          "initial_tokens": 5,
+          "time_elapsed": -5.0,
+          "tokens_added": 0,
+          "final_tokens": 5,
+          "safe": true,
+          "risk": "LOW"
+        },
+        "fractional_fill_rate": {
+          "fill_rate": 1.5,
+          "interval_sec": 0.5,
+          "iterations": 20,
+          "total_consumed": 0,
+          "theoretical_max": 10,
+          "overshoot": false,
+          "risk": "LOW"
+        },
+        "capacity_overshoot": {
+          "capacity": 10,
+          "fill_rate": 100,
+          "elapsed_sec": 1.0,
+          "would_add": 100,
+          "capped_at": 10,
+          "actual_tokens": 9.0,
+          "safe": true,
+          "risk": "LOW"
+        },
+        "zero_capacity": {
+          "capacity": 0,
+          "fill_rate": 0,
+          "consumed": false,
+          "expected": false,
+          "safe": true,
+          "risk": "LOW"
+        },
+        "concurrent_race_window": {
+          "initial_tokens": 1,
+          "concurrent_requests": 10,
+          "race_consumptions": 1,
+          "race_vulnerable": false,
+          "mitigated_by": "Lua atomic eval (Redis EVAL) in production",
+          "risk": "INFO \u2014 mitigated in actual Redis implementation"
+        }
+      },
+      "recommendation": "Production Lua script handles most of these via Redis atomicity. Add explicit guards: max(0, timePassed) to handle clock skew, add monotonic timestamp validation, and enforce capacity > 0 at construction time."
+    },
+    {
+      "test_name": "Circuit Breaker DoS via Deliberate Failures",
+      "category": "Availability",
+      "severity": "HIGH",
+      "status": "VULNERABLE",
+      "description": "Attacker deliberately sends failing requests to trip the circuit breaker, causing legitimate users to be blocked during the OPEN window.",
+      "details": {
+        "attacker_failing_requests": 5,
+        "failure_threshold": 3,
+        "state_after_attack": "OPEN",
+        "legitimate_blocked": 13,
+        "reset_timeout_sec": 15.0,
+        "exposure_window_sec": 15.0
+      },
+      "recommendation": "Differentiate between client-side errors (4xx) and server-side errors (5xx) \u2014 only trip the circuit on 5xx responses. Add per-client failure tracking to prevent a single malicious client from affecting the global circuit state. Consider a half-open exponential backoff strategy."
+    },
+    {
+      "test_name": "Queue Overflow / Redis Memory Exhaustion",
+      "category": "Availability / Resource Exhaustion",
+      "severity": "CRITICAL",
+      "status": "PARTIAL",
+      "description": "Tests whether unbounded queue depth allows an attacker to exhaust Redis memory.",
+      "details": {
+        "no_limit": {
+          "attempted": 50000,
+          "queued": 50000,
+          "dropped": 0,
+          "queue_depth": 50000,
+          "memory_est_mb": 12.207,
+          "risk": "CRITICAL"
+        },
+        "limited_10": {
+          "attempted": 50000,
+          "queued": 10,
+          "dropped": 49990,
+          "queue_depth": 10,
+          "memory_est_mb": 0.002,
+          "risk": "LOW"
+        },
+        "limited_100": {
+          "attempted": 50000,
+          "queued": 100,
+          "dropped": 49900,
+          "queue_depth": 100,
+          "memory_est_mb": 0.024,
+          "risk": "LOW"
+        },
+        "limited_1000": {
+          "attempted": 50000,
+          "queued": 1000,
+          "dropped": 49000,
+          "queue_depth": 1000,
+          "memory_est_mb": 0.244,
+          "risk": "LOW"
+        }
+      },
+      "recommendation": "Enforce REDIS_MAXMEMORY and eviction policy (allkeys-lru). Always set a max queue depth (e.g., 1000 entries). Monitor queue length via /status endpoint and emit alerts when queue_length > 80% of max."
+    },
+    {
+      "test_name": "X-Forwarded-For Header Spoofing",
+      "category": "Authentication / Access Control",
+      "severity": "HIGH",
+      "status": "VULNERABLE",
+      "description": "Attacker rotates X-Forwarded-For values to bypass per-IP rate limiting, appearing as 100 different IPs to the middleware.",
+      "details": {
+        "real_ip": "192.168.1.100",
+        "spoofed_ips_tested": 100,
+        "trusted_proxy_validated": false,
+        "bypass_possible": true,
+        "requests_that_bypass": 100
+      },
+      "recommendation": "Never trust X-Forwarded-For from untrusted sources. Use req.socket.remoteAddress as the authoritative IP, or configure a trusted proxy list. In Express.js, set app.set('trust proxy', 1) only if behind a known load balancer."
+    }
+  ]
+}
