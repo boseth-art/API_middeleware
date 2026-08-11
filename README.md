@@ -16,13 +16,26 @@ A common issue in popular services is database overload due to simultaneous logi
 ## Project Structure
 
 *   `index.js`: The main Express.js application, acting as the proxy server. It handles incoming requests, applies rate limiting, queues excess requests, and dispatches them via the circuit breaker.
-*   `src/rateLimiter.js`: Implements the `TokenBucket` algorithm using Redis for distributed token management.
-*   `src/requestQueue.js`: Manages a distributed request queue using Redis lists.
-*   `src/circuitBreaker.js`: Implements an in-memory circuit breaker pattern (for a distributed system, this state would ideally also be in Redis).
+*   `src/rateLimiter.js`: Implements the `TokenBucket` algorithm using Redis for distributed token management with a Lua script for atomic token consumption.
+*   `src/requestQueue.js`: Manages a distributed request queue using Redis lists, allowing push and blocking pop operations.
+*   `src/circuitBreaker.js`: Implements an in-memory circuit breaker pattern.
 *   `src/worker.js`: A separate process responsible for continuously pulling requests from the `RequestQueue` and dispatching them to the backend when allowed by the rate limiter and circuit breaker.
-*   `test/`: Contains unit tests for `TokenBucket`, `RequestQueue`, and `CircuitBreaker`.
+*   `test/`: Contains unit tests for the core components using Mocha and Chai.
+
+## API Endpoints
+
+*   **`POST /login`**: The primary entry point. Simulates a login attempt that is passed through the rate limiter, queued if needed, and protected by the circuit breaker.
+*   **`GET /status`**: A monitoring endpoint returning the current state of the Token Bucket, Request Queue length, and Circuit Breaker state.
+*   **`ALL /db-login`**: A mock internal backend endpoint used by the proxy and worker to simulate real database logic and occasional failures.
 
 ## Setup and Installation
+
+### Prerequisites
+
+*   **Node.js**: v18.0 or higher is required as the project utilizes native `fetch` and ES Modules.
+*   **Redis**: A running Redis instance is required for distributed state management.
+
+### Installation Steps
 
 1.  **Clone the repository**:
     ```bash
@@ -56,22 +69,22 @@ A common issue in popular services is database overload due to simultaneous logi
     ```bash
     node src/worker.js
     ```
-    This worker will continuously process requests from the Redis queue.
+    This worker will continuously process queued requests that were held back due to rate limiting.
 
 ## How to Test (Manual)
 
-Once both the proxy server and the worker are running, you can interact with the `/login` endpoint.
+Once both the proxy server and the worker are running, you can interact with the endpoints.
 
 *   **Send a login request**:
     Use `curl` or Postman to send a POST request to `http://localhost:3000/login` with a JSON body:
     ```bash
-    curl -X POST -H "Content-Type: application/json" -d "{"username": "userX", "password": "password"}" http://localhost:3000/login
+    curl -X POST -H "Content-Type: application/json" -d '{"username": "userX", "password": "password"}' http://localhost:3000/login
     ```
     Observe the server logs. If requests exceed the rate limit, they will be queued.
     The mock backend (`/db-login`) has a 20% chance of failure to simulate an unstable service, which will trigger the circuit breaker.
 
 *   **Check status**:
-    Access `http://localhost:3000/status` in your browser or with `curl` to see the current state of the Token Bucket, Request Queue, and Circuit Breaker.
+    Access `http://localhost:3000/status` in your browser or with `curl` to see the current state of the system:
     ```bash
     curl http://localhost:3000/status
     ```
@@ -85,4 +98,10 @@ Once both the proxy server and the worker are running, you can interact with the
     ```
     This will execute all unit tests for `TokenBucket`, `RequestQueue`, and `CircuitBreaker` and report the results.
 
-This README provides a comprehensive overview and instructions for the project.
+## Configuration
+
+You can tweak the threshold values in `index.js` and `src/worker.js` to observe different system behaviors under load:
+*   `RATE_LIMIT_CAPACITY`: Maximum burst of requests allowed.
+*   `RATE_LIMIT_FILL_RATE`: Number of requests permitted per second.
+*   `QUEUE_MAX_SIZE`: Maximum number of requests to queue before rejecting outright.
+*   `CIRCUIT_BREAKER_FAILURE_THRESHOLD`: Failures needed to trip the circuit open.

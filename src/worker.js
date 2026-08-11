@@ -1,7 +1,7 @@
 import TokenBucket from './rateLimiter.js';
 import RequestQueue from './requestQueue.js';
 import CircuitBreaker from './circuitBreaker.js';
-import fetch from 'node-fetch'; // For making HTTP requests
+// fetch is native in Node 18+
 
 // --- Configuration ---
 const RATE_LIMIT_CAPACITY = 30;
