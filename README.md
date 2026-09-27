@@ -139,4 +139,4 @@ Under extreme load, the system achieved a **0% drop rate** (0 requests dropped).
 *(Detailed data is available in `benchmark_dataset.csv`)*
 
 ## Microsoft Learn Achievements
-*   *[Please insert your achievements from your profile here (https://learn.microsoft.com/en-us/users/bosethrathnayake-5755/)]*
+*   *(https://learn.microsoft.com/en-us/users/bosethrathnayake-5755/)]*
