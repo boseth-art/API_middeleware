@@ -1,4 +1,4 @@
-# API Rate Limiter and Request Queuing Middleware
+# API Rate Limiter and Request Queuing Middleware (Version 2)
 
 This project implements a Node.js middleware/proxy designed to protect a backend service (like a database login) from sudden traffic spikes by incorporating **Rate Limiting**, **Request Queuing**, and **Circuit Breaker** patterns.
 
@@ -106,8 +106,25 @@ You can tweak the threshold values in `index.js` and `src/worker.js` to observe 
 *   `QUEUE_MAX_SIZE`: Maximum number of requests to queue before rejecting outright.
 *   `CIRCUIT_BREAKER_FAILURE_THRESHOLD`: Failures needed to trip the circuit open.
 
-## Performance Benchmarks & Drop Rate
+## Benchmarking and Analysis (Version 2)
 
+Version 2 introduces comprehensive automated benchmarking and statistical analysis tools to thoroughly evaluate the middleware's performance, scalability, and security.
+
+### Running Benchmarks
+We provide several bash scripts to run various levels of load testing using Node.js:
+*   `./run_all.sh` - Runs the standard `benchmark.js` script.
+*   `./run_extensive.sh` - Runs the `extensive_benchmark.js` script for a more rigorous load test.
+*   `./run_massive.sh` - Runs the `massive_benchmark.js` script to simulate extreme traffic spikes (e.g., 20,000 concurrent requests).
+
+### Running Statistical Analysis
+The `analysis/` directory contains Python scripts for generating detailed reports from the benchmark results. 
+To run the full suite of analysis tests:
+```bash
+python3 analysis/run_all_analysis.py
+```
+This will generate JSON reports (e.g., `performance_results.json`, `scalability_results.json`, `security_findings.json`) and a comprehensive markdown report (`analysis_report.md`).
+
+### Performance Benchmarks & Drop Rate
 We conducted a massive load test consisting of **20,000 concurrent requests** to evaluate the middleware's resilience.
 
 **Test Results (20,000 Requests):**
