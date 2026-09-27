@@ -22,8 +22,8 @@ from typing import List, Dict, Any, Tuple
 SEED_BASE          = 42         # CRN base seed
 N_TRIALS           = 30         # Independent trials
 SIM_DURATION_SEC   = 60.0       # Simulation window per trial
-BACKGROUND_RPS     = 5          # Poisson λ for background traffic
-SPIKE_SIZE         = 15         # Concurrent requests per spike
+BACKGROUND_RPS     = 50         # Increased from 5 to 50 for stress testing
+SPIKE_SIZE         = 100        # Increased from 15 to 100
 SPIKE_INTERVAL_SEC = 3.0        # Spike every 3 seconds
 
 # Token Bucket Parameters
@@ -34,7 +34,9 @@ TB_FILL_RATE       = 5.0        # Tokens per second
 CONFIGS = [
     {"label": "Old Baseline (Cap=10, Q=0)", "cap": 10, "fill": 5.0, "q": 0},
     {"label": "Old SDB (Cap=10, Q=10)", "cap": 10, "fill": 5.0, "q": 10},
-    {"label": "New Sweet Spot (Cap=30, Q=75)", "cap": 30, "fill": 15.0, "q": 75}
+    {"label": "New SDB (Cap=30, Q=75)", "cap": 30, "fill": 15.0, "q": 75},
+    {"label": "New SDB (Cap=30, Q=150)", "cap": 30, "fill": 15.0, "q": 150},
+    {"label": "New SDB (Cap=30, Q=300)", "cap": 30, "fill": 15.0, "q": 300}
 ]
 
 # Simulated backend latency distribution (log-normal, ms)
@@ -341,7 +343,7 @@ def run_performance_matrix() -> Dict[str, Any]:
 
     # Comparative Analysis: Baseline vs New Sweet Spot
     baseline_key = "Old Baseline (Cap=10, Q=0)"
-    sdb10_key    = "New Sweet Spot (Cap=30, Q=75)"
+    sdb10_key    = "Old SDB (Cap=10, Q=10)"
 
     if baseline_key in all_configs and sdb10_key in all_configs:
         baseline_drops = all_configs[baseline_key]["drop_rate_%"]["raw"]

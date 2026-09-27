@@ -1,3 +1,10 @@
 node_modules/
 .DS_Store
 *.env
+
+# Ignore logs, data, and cache
+*.log
+*.csv
+*.txt
+*.rdb
+__pycache__/

@@ -5,7 +5,7 @@
 > R.M.U.P. Boseth Rathnayake¹, D.B.M. Jayathilake², W.C. Deshapriya³
 > Department of Computing, Lanka Nippon BizTech Institute (LNBTI), Maharagama, Sri Lanka
 >
-> Generated: `2026-07-10 17:19:40 UTC`
+> Generated: `2026-08-17 06:39:29 UTC`
 
 ---
 
@@ -30,10 +30,10 @@ This report presents a comprehensive three-dimensional evaluation of the **Seque
 |-----------|-----------|--------|
 | **Security** | Overall Risk Score | **59 / 100 (CRITICAL)** |
 | **Security** | Vulnerabilities Identified | **3 of 8 tests** |
-| **Performance** | Mean Drop Rate — Token-Only Baseline | **48.4089%** |
-| **Performance** | Mean Drop Rate — SDB Q=10 | **46.7107%** |
-| **Performance** | Relative Drop Rate Reduction | **3.51%** |
-| **Performance** | Cohen's d Effect Size | **1.2765 (Large)** |
+| **Performance** | Mean Drop Rate — Token-Only Baseline | **93.6765%** |
+| **Performance** | Mean Drop Rate — Old SDB (Cap=10, Q=10) | **93.4719%** |
+| **Performance** | Relative Drop Rate Reduction | **0.22%** |
+| **Performance** | Cohen's d Effect Size | **3.8054 (Large)** |
 | **Scalability** | Saturation Point (Q=10) | **≥ 30 RPS** |
 | **Scalability** | Linear Scaling Efficiency (2 workers) | See Section 5 |
 
@@ -209,20 +209,20 @@ This report presents a comprehensive three-dimensional evaluation of the **Seque
 > **Simulation Parameters:**
 > - Trials (N): `30` (Common Random Numbers / CRN)
 > - Simulation Duration: `60.0s` per trial
-> - Background Traffic: Poisson process λ = `5 req/s`
-> - Spike Model: `15` simultaneous requests every `3.0s`
-> - Token Bucket: capacity = `10`, fill rate = `5.0 tokens/s`
+> - Background Traffic: Poisson process λ = `50 req/s`
+> - Spike Model: `100` simultaneous requests every `3.0s`
+> - Token Bucket: capacity = `30`, fill rate = `15.0 tokens/s`
 > - CRN Seed Base: `42`
 
 ### 3.1 Aggregated Performance Across All Configurations
 
-| Configuration         | Drop Rate % | Throughput RPS | p50 Lat(ms) | p95 Lat(ms) | p99 Lat(ms) | Queue Wait p95 |
-| --------------------- | ----------- | -------------- | ----------- | ----------- | ----------- | -------------- |
-| Token-Only (Baseline) | 48.4089     | 5.0633         | 89.9993     | 241.5727    | 376.6583    | 0.0000         |
-| SDB Q=5               | 47.5598     | 5.1467         | 89.9650     | 242.1457    | 377.9143    | 57960.0000     |
-| SDB Q=10              | 46.7107     | 5.2300         | 90.0607     | 241.9497    | 376.9237    | 58561.6313     |
-| SDB Q=20              | 45.0125     | 5.3967         | 90.2263     | 241.8487    | 375.5457    | 58632.3077     |
-| SDB Q=50              | 39.9178     | 5.8967         | 90.1197     | 241.1470    | 380.1920    | 59124.1153     |
+| Configuration              | Drop Rate % | Throughput RPS | p50 Lat(ms) | p95 Lat(ms) | p99 Lat(ms) | Queue Wait p95 |
+| -------------------------- | ----------- | -------------- | ----------- | ----------- | ----------- | -------------- |
+| Old Baseline (Cap=10, Q=0) | 93.6765     | 5.1500         | 89.9633     | 242.1110    | 378.1287    | 0.0000         |
+| Old SDB (Cap=10, Q=10)     | 93.4719     | 5.3167         | 90.0593     | 241.7180    | 376.6023    | 61486.0127     |
+| New SDB (Cap=30, Q=75)     | 79.4558     | 16.7316        | 89.4493     | 245.0433    | 371.5460    | 62009.8630     |
+| New SDB (Cap=30, Q=150)    | 77.9210     | 17.9816        | 89.5347     | 243.9127    | 373.2710    | 66502.0097     |
+| New SDB (Cap=30, Q=300)    | 74.8513     | 20.4816        | 89.7913     | 243.9833    | 370.9487    | 73155.8810     |
 
 > Values shown are **means across 30 independent CRN trials**. All latencies in milliseconds (log-normal model, median ≈ 90ms).
 
@@ -230,20 +230,20 @@ This report presents a comprehensive three-dimensional evaluation of the **Seque
 
 | Configuration | Mean Drop Rate | 95% CI Lower | 95% CI Upper | Reduction vs Baseline |
 |--------------|---------------|-------------|-------------|----------------------|
-| Token-Only (Baseline) | 48.4089% | 47.9393% | 48.8785% | 0.00% |
-| SDB Q=5 | 47.5598% | 47.0838% | 48.0358% | 1.75% |
-| SDB Q=10 | 46.7107% | 46.2282% | 47.1932% | 3.51% |
-| SDB Q=20 | 45.0125% | 44.5170% | 45.5079% | 7.02% |
-| SDB Q=50 | 39.9178% | 39.3830% | 40.4526% | 17.54% |
+| Old Baseline (Cap=10, Q=0) | 93.6765% | 93.6576% | 93.6954% | 0.00% |
+| Old SDB (Cap=10, Q=10) | 93.4719% | 93.4523% | 93.4914% | 0.22% |
+| New SDB (Cap=30, Q=75) | 79.4558% | 79.3945% | 79.5171% | 15.18% |
+| New SDB (Cap=30, Q=150) | 77.9210% | 77.8551% | 77.9868% | 16.82% |
+| New SDB (Cap=30, Q=300) | 74.8513% | 74.7763% | 74.9263% | 20.10% |
 
-### 3.3 Latency Percentile Distribution (SDB Q=10 vs Baseline)
+### 3.3 Latency Percentile Distribution (Old SDB (Cap=10, Q=10) vs Baseline)
 
-| Percentile | Token-Only (Baseline) | SDB Q=10 | Delta |
+| Percentile | Old Baseline (Cap=10, Q=0) | Old SDB (Cap=10, Q=10) | Delta |
 |------------|----------------------|----------|-------|
-| Latency P50 Ms | 90.00ms | 90.06ms | +0.06ms |
-| Latency P95 Ms | 241.57ms | 241.95ms | +0.38ms |
-| Latency P99 Ms | 376.66ms | 376.92ms | +0.27ms |
-| Latency Mean Ms | 108.27ms | 108.26ms | -0.00ms |
+| Latency P50 Ms | 89.96ms | 90.06ms | +0.10ms |
+| Latency P95 Ms | 242.11ms | 241.72ms | -0.39ms |
+| Latency P99 Ms | 378.13ms | 376.60ms | -1.53ms |
+| Latency Mean Ms | 108.33ms | 108.17ms | -0.16ms |
 
 ---
 
@@ -260,10 +260,10 @@ This report presents a comprehensive three-dimensional evaluation of the **Seque
 | Parameter | Value |
 |-----------|-------|
 | Test | Welch's t-test (unequal variance) |
-| Groups | Token-Only vs SDB Q=10 (N=30 each) |
-| t-statistic | **4.943731** |
-| Degrees of Freedom | ~57.96 |
-| p-value (approx) | **7.7e-07** |
+| Groups | Token-Only vs Old SDB (Cap=10, Q=10) (N=30 each) |
+| t-statistic | **14.738306** |
+| Degrees of Freedom | ~57.94 |
+| p-value (approx) | **0.0** |
 | Significance | ***** (p < 0.001)** |
 | Decision | **Reject H₀** |
 
@@ -272,8 +272,8 @@ This report presents a comprehensive three-dimensional evaluation of the **Seque
 | Parameter | Value |
 |-----------|-------|
 | Test | Mann-Whitney U (non-parametric) |
-| U-statistic | **173.0** |
-| p-value (approx) | **4.219e-05** |
+| U-statistic | **1.0** |
+| p-value (approx) | **0.0** |
 | Significance | ***** (p < 0.001)** |
 | Decision | **Reject H₀** |
 
@@ -282,7 +282,7 @@ This report presents a comprehensive three-dimensional evaluation of the **Seque
 | Parameter | Value |
 |-----------|-------|
 | Test | One-Way ANOVA across all 5 queue configurations |
-| F-statistic | **180.625577** |
+| F-statistic | **107787.14155** |
 | df (between) | 4 |
 | df (within) | 145 |
 | p-value (approx) | **0.0** |
@@ -293,8 +293,8 @@ This report presents a comprehensive three-dimensional evaluation of the **Seque
 
 | Metric | Value | Interpretation |
 |--------|-------|---------------|
-| Cohen's d (Baseline vs SDB Q=10) | **1.2765** | **Large Effect** |
-| Relative Drop Rate Reduction | **3.51%** | Highly Practical |
+| Cohen's d (Baseline vs Old SDB (Cap=10, Q=10)) | **3.8054** | **Large Effect** |
+| Relative Drop Rate Reduction | **0.22%** | Highly Practical |
 | All three tests agree | **Reject H₀** | ✅ Converging Evidence |
 
 > **Conclusion:** All three statistical tests consistently confirm that the SDB architecture
@@ -309,39 +309,40 @@ This report presents a comprehensive three-dimensional evaluation of the **Seque
 
 Drop rate (%) as incoming RPS increases — across queue sizes.
 
-| RPS | No Queue | Q=5   | Q=10  | Q=20  | Q=50  | Q=100 |
+| RPS | No Queue | Q=10  | Q=75  | Q=150 | Q=300 | Q=500 |
 | --- | -------- | ----- | ----- | ----- | ----- | ----- |
-| 5   | 4.3%     | 3.7%  | 2.7%  | 0.0%  | 0.0%  | 0.0%  |
-| 10  | 49.0%    | 47.7% | 48.8% | 43.5% | 46.0% | 37.1% |
-| 15  | 65.8%    | 64.0% | 65.9% | 64.4% | 63.7% | 60.0% |
-| 20  | 75.0%    | 74.1% | 74.3% | 73.4% | 72.2% | 70.5% |
-| 30  | 83.1%    | 82.9% | 82.5% | 82.5% | 81.9% | 80.9% |
-| 40  | 87.3%    | 87.2% | 87.3% | 86.7% | 85.9% | 85.4% |
-| 50  | 89.8%    | 89.6% | 89.7% | 89.5% | 88.9% | 88.4% |
-| 60  | 91.7%    | 91.4% | 91.4% | 91.1% | 90.6% | 90.1% |
-| 70  | 92.8%    | 92.8% | 92.7% | 92.6% | 92.2% | 91.5% |
-| 80  | 93.6%    | 93.7% | 93.6% | 93.5% | 93.1% | 92.6% |
-| 100 | 94.9%    | 94.9% | 94.8% | 94.7% | 94.6% | 94.1% |
+| 5   | 0.0%     | 0.0%  | 0.0%  | 0.0%  | 0.0%  | 0.0%  |
+| 10  | 0.0%     | 0.0%  | 0.0%  | 0.0%  | 0.0%  | 0.0%  |
+| 15  | N/A      | N/A   | N/A   | N/A   | N/A   | N/A   |
+| 20  | 23.4%    | 21.9% | 20.5% | 18.3% | 11.1% | 1.8%  |
+| 30  | N/A      | N/A   | N/A   | N/A   | N/A   | N/A   |
+| 40  | N/A      | N/A   | N/A   | N/A   | N/A   | N/A   |
+| 50  | 69.8%    | 69.4% | 67.5% | 67.6% | 64.3% | 61.2% |
+| 60  | N/A      | N/A   | N/A   | N/A   | N/A   | N/A   |
+| 70  | N/A      | N/A   | N/A   | N/A   | N/A   | N/A   |
+| 80  | N/A      | N/A   | N/A   | N/A   | N/A   | N/A   |
+| 100 | 84.7%    | 84.5% | 83.9% | 83.6% | 82.2% | 80.4% |
 
 > **Saturation Points:**
-> - **No Queue**: Saturates at **10 RPS** (drop > 30%)
-> - **Q=5**: Saturates at **10 RPS** (drop > 30%)
-> - **Q=10**: Saturates at **10 RPS** (drop > 30%)
-> - **Q=20**: Saturates at **10 RPS** (drop > 30%)
-> - **Q=50**: Saturates at **10 RPS** (drop > 30%)
-> - **Q=100**: Saturates at **10 RPS** (drop > 30%)
+> - **No Queue**: Saturates at **50 RPS** (drop > 30%)
+> - **Q=10**: Saturates at **50 RPS** (drop > 30%)
+> - **Q=75**: Saturates at **50 RPS** (drop > 30%)
+> - **Q=150**: Saturates at **50 RPS** (drop > 30%)
+> - **Q=300**: Saturates at **50 RPS** (drop > 30%)
+> - **Q=500**: Saturates at **50 RPS** (drop > 30%)
 
 ### 5.2 Horizontal Scaling Projection
 
-Workers = independent queue-draining processes, each adding `5.0` drain tokens/sec.
+Workers = independent queue-draining processes, each adding `15.0` drain tokens/sec.
 
 | Workers | Drain Rate (t/s) | Total Reqs | Drop Rate | Throughput RPS | Scaling Efficiency |
 | ------- | ---------------- | ---------- | --------- | -------------- | ------------------ |
-| 1       | 5.0              | 5986       | 89.5%     | 5.1            | 100.0%             |
-| 2       | 10.0             | 6034       | 79.6%     | 10.1           | 99.1%              |
-| 4       | 20.0             | 5950       | 59.2%     | 20.1           | 98.8%              |
-| 8       | 40.0             | 6084       | 20.8%     | 40.0           | 98.4%              |
-| 16      | 80.0             | 6053       | 0.0%      | 50.4           | 62.0%              |
+| 1       | 15.0             | 24057      | 92.1%     | 15.2           | 100.0%             |
+| 2       | 30.0             | 24011      | 84.6%     | 30.2           | 99.2%              |
+| 4       | 60.0             | 23817      | 69.3%     | 60.2           | 98.8%              |
+| 8       | 120.0            | 23905      | 39.3%     | 120.2          | 98.6%              |
+| 16      | 240.0            | 24122      | 0.0%      | 201.0          | 82.4%              |
+| 32      | 480.0            | 24019      | 0.0%      | 200.2          | 41.0%              |
 
 ### 5.3 Circuit Breaker Stress Tests
 
@@ -356,35 +357,32 @@ Workers = independent queue-draining processes, each adding `5.0` drain tokens/s
 - **Sustained Moderate**: Circuit oscillates between OPEN and HALF_OPEN — system partially recovers.
 - **Cascading Spikes**: Predictable cyclic open/close pattern — reset timeout governs recovery cadence.
 
-### 5.4 Spike Absorption Capacity (SDB Q=10, Capacity=10)
+### 5.4 Spike Absorption Capacity (Old SDB (Cap=10, Q=10), Capacity=10)
 
 Maximum theoretical absorption = Token Capacity (10) + Queue Size (10) = **20 concurrent requests**.
 
 | Spike Size | Immediate (Token) | Queue Buffered | Dropped | Absorbed % | Drop Rate % |
 | ---------- | ----------------- | -------------- | ------- | ---------- | ----------- |
-| 5          | 5                 | 5              | 0       | 100.0%     | 0.0%        |
-| 10         | 10                | 10             | 0       | 100.0%     | 0.0%        |
-| 15         | 10                | 10             | 0       | 100.0%     | 0.0%        |
-| 20         | 10                | 10             | 0       | 100.0%     | 0.0%        |
-| 30         | 10                | 10             | 10      | 66.7%      | 33.3%       |
-| 50         | 10                | 10             | 30      | 40.0%      | 60.0%       |
-| 75         | 10                | 10             | 55      | 26.7%      | 73.3%       |
-| 100        | 10                | 10             | 80      | 20.0%      | 80.0%       |
-| 150        | 10                | 10             | 130     | 13.3%      | 86.7%       |
-| 200        | 10                | 10             | 180     | 10.0%      | 90.0%       |
+| 15         | 15                | 15             | 0       | 100.0%     | 0.0%        |
+| 50         | 30                | 50             | 0       | 100.0%     | 0.0%        |
+| 100        | 30                | 75             | 0       | 100.0%     | 0.0%        |
+| 200        | 30                | 75             | 95      | 52.5%      | 47.5%       |
+| 300        | 30                | 75             | 195     | 35.0%      | 65.0%       |
+| 500        | 30                | 75             | 395     | 21.0%      | 79.0%       |
+| 1000       | 30                | 75             | 895     | 10.5%      | 89.5%       |
 
 ### 5.5 Sustained Load Stability
 
-Token fill rate = `5.0 t/s`. System stability threshold: drop rate < 5%.
+Token fill rate = `15.0 t/s`. System stability threshold: drop rate < 5%.
 
 | Load Ratio | Incoming RPS | Arrivals | Drop Rate | Throughput RPS | Status      |
 | ---------- | ------------ | -------- | --------- | -------------- | ----------- |
-| 0.5× fill  | 2.5          | 282      | 0.0%      | 2.4            | ✅ Stable    |
-| 1.0× fill  | 5.0          | 576      | 3.0%      | 4.7            | ✅ Stable    |
-| 1.5× fill  | 7.5          | 914      | 32.4%     | 5.2            | ⚠️ Unstable |
-| 2.0× fill  | 10.0         | 1173     | 47.3%     | 5.2            | ⚠️ Unstable |
-| 3.0× fill  | 15.0         | 1848     | 66.6%     | 5.2            | ⚠️ Unstable |
-| 5.0× fill  | 25.0         | 3033     | 79.6%     | 5.2            | ⚠️ Unstable |
+| 0.5× fill  | 7.5          | 858      | 0.0%      | 7.2            | ✅ Stable    |
+| 1.0× fill  | 15.0         | 1797     | 0.6%      | 14.9           | ✅ Stable    |
+| 1.5× fill  | 22.5         | 2742     | 33.0%     | 15.3           | ⚠️ Unstable |
+| 2.0× fill  | 30.0         | 3590     | 48.8%     | 15.3           | ⚠️ Unstable |
+| 3.0× fill  | 45.0         | 5390     | 65.9%     | 15.3           | ⚠️ Unstable |
+| 5.0× fill  | 75.0         | 9078     | 79.7%     | 15.3           | ⚠️ Unstable |
 
 > **Finding:** System remains stable up to **1.0× fill rate** (5 RPS). Above that, the queue
 > absorbs transient excess, but at **≥ 2× fill rate** (10+ RPS), queue depth determines residual drop.
@@ -397,9 +395,9 @@ Token fill rate = `5.0 t/s`. System stability threshold: drop rate < 5%.
 
 | Claim | Evidence | Conclusion |
 |-------|---------|-----------|
-| SDB reduces drop rate | Drop: 48.41% → 46.71% | ✅ **Confirmed** |
+| SDB reduces drop rate | Drop: 93.68% → 93.47% | ✅ **Confirmed** |
 | Reduction is statistically significant | Welch's t, Mann-Whitney U, ANOVA all p < 0.001 | ✅ **Confirmed** |
-| Effect size is large | Cohen's d = 1.2765 (Large) | ✅ **Confirmed** |
+| Effect size is large | Cohen's d = 3.8054 (Large) | ✅ **Confirmed** |
 | Security gaps exist | 3 VULNERABLE, 2 PARTIAL | ⚠️ **Action Required** |
 | System scales horizontally | Near-linear to 2 workers; diminishing returns beyond 4 | ✅ **Confirmed** |
 | Stable at intended load | Stable up to 1× fill rate (5 RPS) | ✅ **Confirmed** |

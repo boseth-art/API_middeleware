@@ -345,7 +345,7 @@ This report presents a comprehensive three-dimensional evaluation of the **Seque
 | **Security** | Overall Risk Score | **{sec_sum['overall_risk_score']} / 100 ({sec_sum['risk_rating']})** |
 | **Security** | Vulnerabilities Identified | **{len(sec_sum['vulnerabilities'])} of {sec_sum['total_tests']} tests** |
 | **Performance** | Mean Drop Rate — Token-Only Baseline | **{perf_comp['baseline_mean_drop_%']:.4f}%** |
-| **Performance** | Mean Drop Rate — SDB Q=10 | **{perf_comp['sdb10_mean_drop_%']:.4f}%** |
+| **Performance** | Mean Drop Rate — Old SDB (Cap=10, Q=10) | **{perf_comp['sdb10_mean_drop_%']:.4f}%** |
 | **Performance** | Relative Drop Rate Reduction | **{perf_comp['relative_reduction_%']:.2f}%** |
 | **Performance** | Cohen's d Effect Size | **{perf_comp['cohens_d']:.4f} ({perf_comp['effect_magnitude']})** |
 | **Scalability** | Saturation Point (Q=10) | **≥ 30 RPS** |
@@ -435,7 +435,7 @@ This report presents a comprehensive three-dimensional evaluation of the **Seque
 |--------------|---------------|-------------|-------------|----------------------|
 """
 
-    baseline_dr = perf_configs.get("Token-Only (Baseline)", {}).get("drop_rate_%", {})
+    baseline_dr = perf_configs.get("Old Baseline (Cap=10, Q=0)", {}).get("drop_rate_%", {})
     baseline_mean = baseline_dr.get("mean", 0)
     for label, cfg in perf_configs.items():
         dr   = cfg["drop_rate_%"]
@@ -446,14 +446,14 @@ This report presents a comprehensive three-dimensional evaluation of the **Seque
         report += f"| {label} | {mu:.4f}% | {lo:.4f}% | {hi:.4f}% | {red:.2f}% |\n"
 
     report += f"""
-### 3.3 Latency Percentile Distribution (SDB Q=10 vs Baseline)
+### 3.3 Latency Percentile Distribution (Old SDB (Cap=10, Q=10) vs Baseline)
 
-| Percentile | Token-Only (Baseline) | SDB Q=10 | Delta |
+| Percentile | Old Baseline (Cap=10, Q=0) | Old SDB (Cap=10, Q=10) | Delta |
 |------------|----------------------|----------|-------|
 """
 
-    bl  = perf_configs.get("Token-Only (Baseline)", {})
-    s10 = perf_configs.get("SDB Q=10", {})
+    bl  = perf_configs.get("Old Baseline (Cap=10, Q=0)", {})
+    s10 = perf_configs.get("Old SDB (Cap=10, Q=10)", {})
     for pct in ["latency_p50_ms", "latency_p95_ms", "latency_p99_ms", "latency_mean_ms"]:
         bl_v  = bl.get(pct, {}).get("mean", 0)
         s10_v = s10.get(pct, {}).get("mean", 0)
@@ -476,7 +476,7 @@ This report presents a comprehensive three-dimensional evaluation of the **Seque
 | Parameter | Value |
 |-----------|-------|
 | Test | Welch's t-test (unequal variance) |
-| Groups | Token-Only vs SDB Q=10 (N={perf_params['n_trials']} each) |
+| Groups | Token-Only vs Old SDB (Cap=10, Q=10) (N={perf_params['n_trials']} each) |
 | t-statistic | **{welch['t_statistic']}** |
 | Degrees of Freedom | ~{welch['df_approx']} |
 | p-value (approx) | **{welch['p_value']}** |
@@ -509,7 +509,7 @@ This report presents a comprehensive three-dimensional evaluation of the **Seque
 
 | Metric | Value | Interpretation |
 |--------|-------|---------------|
-| Cohen's d (Baseline vs SDB Q=10) | **{perf_comp['cohens_d']:.4f}** | **{perf_comp['effect_magnitude']} Effect** |
+| Cohen's d (Baseline vs Old SDB (Cap=10, Q=10)) | **{perf_comp['cohens_d']:.4f}** | **{perf_comp['effect_magnitude']} Effect** |
 | Relative Drop Rate Reduction | **{perf_comp['relative_reduction_%']:.2f}%** | Highly Practical |
 | All three tests agree | **{anova['decision']}** | ✅ Converging Evidence |
 
@@ -549,7 +549,7 @@ Workers = independent queue-draining processes, each adding `{scale["parameters"
 - **Sustained Moderate**: Circuit oscillates between OPEN and HALF_OPEN — system partially recovers.
 - **Cascading Spikes**: Predictable cyclic open/close pattern — reset timeout governs recovery cadence.
 
-### 5.4 Spike Absorption Capacity (SDB Q=10, Capacity=10)
+### 5.4 Spike Absorption Capacity (Old SDB (Cap=10, Q=10), Capacity=10)
 
 Maximum theoretical absorption = Token Capacity (10) + Queue Size (10) = **20 concurrent requests**.
 
@@ -630,8 +630,8 @@ def main():
     print("\n[4/4] Running Statistical Inference...")
     perf_configs = perf_results["configurations"]
 
-    baseline_key = "Token-Only (Baseline)"
-    sdb10_key    = "SDB Q=10"
+    baseline_key = "Old Baseline (Cap=10, Q=0)"
+    sdb10_key    = "Old SDB (Cap=10, Q=10)"
 
     baseline_drops = perf_configs.get(baseline_key, {}).get("drop_rate_%", {}).get("raw", [0]*30)
     sdb10_drops    = perf_configs.get(sdb10_key,    {}).get("drop_rate_%", {}).get("raw", [0]*30)

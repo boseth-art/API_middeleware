@@ -5,13 +5,13 @@ import CircuitBreaker from './src/circuitBreaker.js';
 import { v4 as uuidv4 } from 'uuid'; // For request IDs
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-const TARGET_SERVICE_URL = 'http://localhost:3001/db-login'; // Mock database service
+const PORT = process.env.PORT || 4000;
+const TARGET_SERVICE_URL = `http://localhost:${PORT}/db-login`; // Mock database service
 
 // --- Configuration ---
-const RATE_LIMIT_CAPACITY = 30;     // Sweet spot capacity (was 1000)
-const RATE_LIMIT_FILL_RATE = 15;    // Sweet spot fill rate (was 100)
-const QUEUE_MAX_SIZE = 75;          // Sweet spot queue size
+const RATE_LIMIT_CAPACITY = 500;     // Increased to handle bursts
+const RATE_LIMIT_FILL_RATE = 100;    // Increased fill rate
+const QUEUE_MAX_SIZE = 20000;        // Massive buffer for storms
 const QUEUE_NAME = 'login_queue';
 
 const CIRCUIT_BREAKER_FAILURE_THRESHOLD = 3;
@@ -34,7 +34,7 @@ app.use(express.json());
 // In a real scenario, this would be a separate microservice
 app.all('/db-login', async (req, res) => {
     // Simulate database latency and occasional failures
-    const latency = Math.floor(Math.random() * 500) + 50; // 50ms to 550ms
+    const latency = Math.floor(Math.random() * 40) + 10; // 10ms to 50ms
     await new Promise(resolve => setTimeout(resolve, latency));
 
     if (Math.random() < 0.2) { // 20% chance of failure

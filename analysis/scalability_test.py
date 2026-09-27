@@ -108,8 +108,8 @@ def test_queue_saturation_curves() -> Dict[str, Any]:
     """
     print("\n  ▶ Queue Saturation Curves ...", flush=True)
     rng        = random.Random(SEED)
-    rps_levels = [5, 10, 15, 20, 30, 40, 50, 60, 70, 80, 100, 1000]
-    q_sizes    = [0, 5, 10, 20, 50, 75, 100]
+    rps_levels = [5, 10, 20, 50, 100, 200, 500, 1000]
+    q_sizes    = [0, 10, 75, 150, 300, 500]
 
     results: Dict[str, Any] = {}
 
@@ -196,9 +196,9 @@ def test_horizontal_scaling() -> Dict[str, Any]:
     """
     print("\n  ▶ Horizontal Scaling Projection ...", flush=True)
 
-    worker_counts    = [1, 2, 4, 8, 16]
-    incoming_rps     = 50.0  # sustained load
-    queue_size       = 20
+    worker_counts    = [1, 2, 4, 8, 16, 32]
+    incoming_rps     = 200.0  # extreme sustained load
+    queue_size       = 75
     rng              = random.Random(SEED)
 
     results: Dict[str, Any] = {}
@@ -359,7 +359,7 @@ def test_spike_absorption() -> Dict[str, Any]:
     """
     print("\n  ▶ Spike Absorption Capacity ...", flush=True)
     rng        = random.Random(SEED)
-    spike_sizes = [5, 10, 15, 20, 30, 50, 75, 100, 150, 200, 1000]
+    spike_sizes = [15, 50, 100, 200, 300, 500, 1000]
     q_size      = 75
 
     results: Dict[str, Any] = {}

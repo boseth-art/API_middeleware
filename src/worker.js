@@ -4,10 +4,10 @@ import CircuitBreaker from './circuitBreaker.js';
 // fetch is native in Node 18+
 
 // --- Configuration ---
-const RATE_LIMIT_CAPACITY = 30;
-const RATE_LIMIT_FILL_RATE = 15;
+const RATE_LIMIT_CAPACITY = 500;
+const RATE_LIMIT_FILL_RATE = 100;
 const QUEUE_NAME = 'login_queue';
-const TARGET_SERVICE_URL = 'http://localhost:3001/db-login';
+const TARGET_SERVICE_URL = 'http://localhost:4000/db-login';
 
 const CIRCUIT_BREAKER_FAILURE_THRESHOLD = 3;
 const CIRCUIT_BREAKER_RESET_TIMEOUT = 15000; // 15 seconds
